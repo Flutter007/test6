@@ -48,7 +48,6 @@ class _CreationTaskScreenState extends State<CreationTaskScreen> {
 
       final data = await request(url);
       final newTask = Task.fromJson(data);
-
       setState(() {
         task = newTask;
         isLoading = false;
@@ -65,6 +64,7 @@ class _CreationTaskScreenState extends State<CreationTaskScreen> {
 
   @override
   Widget build(BuildContext context) {
+    int doneCounter = provider.newTasks.counter;
     Widget content;
     if (isLoading) {
       content = const Center(child: CircularProgressIndicator());
@@ -93,7 +93,7 @@ class _CreationTaskScreenState extends State<CreationTaskScreen> {
                       )
                       .toList(),
             ),
-            const SizedBox(height: 40),
+            SizedBox(height: 40),
             ElevatedButton(
               onPressed: isLoading ? null : getTask,
               child: Text(
@@ -105,9 +105,8 @@ class _CreationTaskScreenState extends State<CreationTaskScreen> {
         ),
       );
     }
-
     return Scaffold(
-      appBar: AppBar(title: const Text('Create new task!')),
+      appBar: AppBar(title: Text('Create new task! -⚡:$doneCounter')),
       body: content,
     );
   }

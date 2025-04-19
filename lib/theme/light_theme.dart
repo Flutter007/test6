@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 final lightColorScheme = ColorScheme.fromSeed(
-  seedColor: Colors.yellow.shade300,
+  seedColor: Colors.yellowAccent.shade400,
 );
 final defaultTheme = ThemeData.light();
 final lightTheme = defaultTheme.copyWith(
@@ -34,4 +35,5 @@ final lightTheme = defaultTheme.copyWith(
 
   scaffoldBackgroundColor: lightColorScheme.inversePrimary,
   cardTheme: CardTheme().copyWith(color: lightColorScheme.surface),
+  textTheme: GoogleFonts.alfaSlabOneTextTheme(),
 );

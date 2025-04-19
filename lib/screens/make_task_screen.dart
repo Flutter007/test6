@@ -17,6 +17,18 @@ class MakeTaskScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Container(
+              width: 200,
+              height: 200,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                image: DecorationImage(
+                  image: AssetImage('assets/images/notebook.png'),
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            SizedBox(height: 30),
             ElevatedButton(
               onPressed: () => goToCreation(context),
               child: Text(

@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
+import '../models/task.dart';
 
 class CustomListTile extends StatelessWidget {
+  final Task task;
   final String title;
   final String subtitle;
-  final void Function() endTask;
+  final void Function()? endTask;
   final void Function() deleteTask;
   const CustomListTile({
     super.key,
     required this.title,
     required this.subtitle,
-    required this.endTask,
     required this.deleteTask,
+    required this.task,
+    this.endTask,
   });
 
   @override
@@ -19,13 +22,20 @@ class CustomListTile extends StatelessWidget {
       child: Row(
         children: [
           Expanded(
-            child: ListTile(title: Text(title), subtitle: Text(subtitle)),
+            child: ListTile(
+              title: Padding(
+                padding: EdgeInsets.all(10),
+                child: Text(textAlign: TextAlign.start, title),
+              ),
+              subtitle: Text(subtitle),
+            ),
           ),
-          IconButton(
-            onPressed: () => endTask,
-            icon: Icon(Icons.stop_circle_outlined),
-          ),
-          IconButton(onPressed: () => deleteTask, icon: Icon(Icons.delete)),
+          if (task.done == false)
+            IconButton(
+              onPressed: endTask,
+              icon: Icon(Icons.done_outline_rounded),
+            ),
+          IconButton(onPressed: deleteTask, icon: Icon(Icons.delete)),
         ],
       ),
     );

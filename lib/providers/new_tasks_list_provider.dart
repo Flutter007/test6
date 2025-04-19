@@ -6,7 +6,7 @@ import '../models/task.dart';
 class NewTasksListProvider extends InheritedWidget {
   final NewTasks newTasks;
   final void Function(Task) addTask;
-  final void Function(Task) endTask;
+  final void Function(Task)? endTask;
   final void Function(Task) deleteTask;
 
   const NewTasksListProvider({
@@ -14,8 +14,8 @@ class NewTasksListProvider extends InheritedWidget {
     required super.child,
     required this.newTasks,
     required this.addTask,
-    required this.endTask,
     required this.deleteTask,
+    this.endTask,
   });
   static NewTasksListProvider? of(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<NewTasksListProvider>();

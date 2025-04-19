@@ -23,7 +23,7 @@ class _NewTasksScreenState extends State<NewTasksScreen> {
   }
 
   void endTask(Task task) {
-    provider.endTask(task);
+    provider.endTask!(task);
   }
 
   void deleteTask(Task task) {
@@ -32,7 +32,7 @@ class _NewTasksScreenState extends State<NewTasksScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final tasks = listState.newTasks;
+    final tasks = listState.newTasks.where((t) => t.done == false).toList();
     return Center(
       child: Column(
         children: [
@@ -41,13 +41,14 @@ class _NewTasksScreenState extends State<NewTasksScreen> {
               itemBuilder: (ctx, index) {
                 final task = tasks[index];
                 return CustomListTile(
+                  task: task,
                   title: task.activity,
                   subtitle: task.type,
                   endTask: () => endTask(task),
                   deleteTask: () => deleteTask(task),
                 );
               },
-              itemCount: listState.newTasks.length,
+              itemCount: tasks.length,
             ),
           ),
         ],

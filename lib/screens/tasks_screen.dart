@@ -19,13 +19,13 @@ class _TasksScreenState extends State<TasksScreen> {
   @override
   Widget build(BuildContext context) {
     final provider = NewTasksListProvider.of(context)!;
-    final newTasks = provider.newTasks.newTasks;
+    final newTasks = provider.newTasks.newTasks.where((t) => t.done == false);
 
     return DefaultTabController(
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Don't Be Bored!"),
+          title: Text("Don't Be Bored! ⚡:${provider.newTasks.counter}"),
           actions: [
             if (newTasks.isNotEmpty)
               IconButton(
@@ -33,7 +33,9 @@ class _TasksScreenState extends State<TasksScreen> {
                 icon: Icon(Icons.add, size: 37),
               ),
           ],
-          bottom: TabBar(tabs: [Tab(text: 'New task'), Tab(text: 'Done task')]),
+          bottom: TabBar(
+            tabs: [Tab(text: '➤ New task'), Tab(text: '✓ Done task')],
+          ),
         ),
         body: TabBarView(
           children: [

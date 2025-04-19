@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class NotFoundScreen extends StatelessWidget {
   const NotFoundScreen({super.key});
+
   void goBackToMenu(BuildContext context) {
     Navigator.of(context).popUntil((route) => route.isFirst);
   }
