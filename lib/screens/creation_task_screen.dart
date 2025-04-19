@@ -3,6 +3,9 @@ import 'package:test6/helpers/request.dart';
 import 'package:test6/models/activity_type.dart';
 import 'package:test6/models/task.dart';
 
+import '../models/new_tasks.dart';
+import '../providers/new_tasks_list_provider.dart';
+
 class CreationTaskScreen extends StatefulWidget {
   const CreationTaskScreen({super.key});
 
@@ -15,6 +18,21 @@ class _CreationTaskScreenState extends State<CreationTaskScreen> {
   Task? task;
   bool isLoading = true;
   String? error;
+  late NewTasksListProvider provider;
+  late NewTasks listState;
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    provider = NewTasksListProvider.of(context)!;
+    listState = provider.newTasks;
+  }
+
+  void addTask(Task task) {
+    setState(() {
+      listState.addTask(task);
+    });
+  }
+
   void getTask() async {
     try {
       final url =
@@ -26,8 +44,7 @@ class _CreationTaskScreenState extends State<CreationTaskScreen> {
         task = Task.fromJson(data);
         isLoading = false;
       });
-
-      print(data);
+      addTask(task!);
     } catch (e) {
       error = e.toString();
       isLoading = false;

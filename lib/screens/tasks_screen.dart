@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:test6/screens/make_task_screen.dart';
+import '../providers/new_tasks_list_provider.dart';
+import 'new_tasks_screen.dart';
 
-class StartScreen extends StatefulWidget {
-  const StartScreen({super.key});
+class TasksScreen extends StatefulWidget {
+  const TasksScreen({super.key});
 
   @override
-  State<StartScreen> createState() => _StartScreenState();
+  State<TasksScreen> createState() => _TasksScreenState();
 }
 
-class _StartScreenState extends State<StartScreen> {
+class _TasksScreenState extends State<TasksScreen> {
   @override
   Widget build(BuildContext context) {
+    final provider = NewTasksListProvider.of(context)!;
+    final listState = provider.newTasks;
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -17,7 +22,12 @@ class _StartScreenState extends State<StartScreen> {
           title: Text('Dont Be Bored!'),
           bottom: TabBar(tabs: [Tab(text: 'New task'), Tab(text: 'Done task')]),
         ),
-        body: TabBarView(children: []),
+        body: TabBarView(
+          children: [
+            listState.newTasks.isEmpty ? MakeTaskScreen() : NewTasksScreen(),
+            Placeholder(),
+          ],
+        ),
       ),
     );
   }
