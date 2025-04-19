@@ -5,20 +5,24 @@ import '../app_routes.dart';
 class MakeTaskScreen extends StatelessWidget {
   const MakeTaskScreen({super.key});
 
+  void goToCreation(BuildContext context) {
+    Navigator.pushNamed(context, AppRoute.create);
+  }
+
   @override
   Widget build(BuildContext context) {
-    void goToCreation() {
-      Navigator.pushNamed(context, AppRoute.create);
-    }
-
+    final theme = Theme.of(context);
     return Scaffold(
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
-              onPressed: goToCreation,
-              child: Text('Create new Task!'),
+              onPressed: () => goToCreation(context),
+              child: Text(
+                'Create new Task!',
+                style: theme.textTheme.titleLarge,
+              ),
             ),
           ],
         ),

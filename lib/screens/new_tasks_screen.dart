@@ -23,20 +23,16 @@ class _NewTasksScreenState extends State<NewTasksScreen> {
   }
 
   void endTask(Task task) {
-    setState(() {
-      listState.endTask(task);
-    });
+    provider.endTask(task);
   }
 
   void deleteTask(Task task) {
-    setState(() {
-      listState.deleteTask(task);
-    });
+    provider.deleteTask(task);
   }
 
   @override
   Widget build(BuildContext context) {
-    final tasks = provider.newTasks.newTasks;
+    final tasks = listState.newTasks;
     return Center(
       child: Column(
         children: [

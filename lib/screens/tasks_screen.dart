@@ -25,10 +25,13 @@ class _TasksScreenState extends State<TasksScreen> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Dont Be Bored!'),
+          title: Text("Don't Be Bored!"),
           actions: [
             if (newTasks.isNotEmpty)
-              IconButton(onPressed: goToCreation, icon: Icon(Icons.add)),
+              IconButton(
+                onPressed: goToCreation,
+                icon: Icon(Icons.add, size: 37),
+              ),
           ],
           bottom: TabBar(tabs: [Tab(text: 'New task'), Tab(text: 'Done task')]),
         ),

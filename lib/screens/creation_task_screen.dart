@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:test6/helpers/request.dart';
 import 'package:test6/models/activity_type.dart';
 import 'package:test6/models/task.dart';
-
 import '../models/new_tasks.dart';
 import '../providers/new_tasks_list_provider.dart';
 
@@ -16,10 +15,11 @@ class CreationTaskScreen extends StatefulWidget {
 class _CreationTaskScreenState extends State<CreationTaskScreen> {
   String? selectedType = 'activity';
   Task? task;
-  bool isLoading = true;
+  bool isLoading = false;
   String? error;
   late NewTasksListProvider provider;
   late NewTasks listState;
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -28,77 +28,86 @@ class _CreationTaskScreenState extends State<CreationTaskScreen> {
   }
 
   void addTask(Task task) {
-    setState(() {
-      listState.addTask(task);
-    });
+    provider.addTask(task);
   }
 
-  void goToTasksScreen() async {
+  Future<void> goToTasksScreen() async {
     await Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
   }
 
-  void getTask() async {
+  Future<void> getTask() async {
+    setState(() {
+      isLoading = true;
+      error = null;
+    });
     try {
       final url =
           selectedType == 'activity'
               ? 'https://bored.api.lewagon.com/api/activity'
               : 'https://bored.api.lewagon.com/api/activity?type=$selectedType';
+
       final data = await request(url);
+      final newTask = Task.fromJson(data);
+
       setState(() {
-        task = Task.fromJson(data);
+        task = newTask;
         isLoading = false;
       });
-      addTask(task!);
-      goToTasksScreen();
+      addTask(newTask);
+      await goToTasksScreen();
     } catch (e) {
-      error = e.toString();
-      isLoading = false;
+      setState(() {
+        error = e.toString();
+        isLoading = false;
+      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
     Widget content;
-    if (isLoading && task != null) {
-      content = Center(child: CircularProgressIndicator());
+    if (isLoading) {
+      content = const Center(child: CircularProgressIndicator());
     } else if (error != null) {
-      content = Text('Error : $error');
+      content = Center(child: Text('Error: $error'));
     } else {
       content = Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Padding(
-              padding: EdgeInsets.only(top: 20),
-              child: DropdownMenu(
-                label: Text('Choose type :'),
-                initialSelection: selectedType,
-                onSelected:
-                    (value) => setState(() {
-                      selectedType = value;
-                    }),
-                dropdownMenuEntries:
-                    activityTypes
-                        .map(
-                          (t) => DropdownMenuEntry(
-                            value: t.id,
-                            label: t.title,
-                            leadingIcon: Icon(t.icon),
-                          ),
-                        )
-                        .toList(),
-              ),
+            DropdownMenu(
+              label: const Text('Choose type:'),
+              initialSelection: selectedType,
+              onSelected:
+                  (value) => setState(() {
+                    selectedType = value;
+                  }),
+              dropdownMenuEntries:
+                  activityTypes
+                      .map(
+                        (t) => DropdownMenuEntry(
+                          value: t.id,
+                          label: t.title,
+                          leadingIcon: Icon(t.icon),
+                        ),
+                      )
+                      .toList(),
             ),
+            const SizedBox(height: 40),
             ElevatedButton(
-              onPressed: getTask,
-              child: Text(isLoading ? 'Get Task' : 'Loading...'),
+              onPressed: isLoading ? null : getTask,
+              child: Text(
+                'Get Task',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
             ),
           ],
         ),
       );
     }
+
     return Scaffold(
-      appBar: AppBar(title: Text('Create new task!')),
+      appBar: AppBar(title: const Text('Create new task!')),
       body: content,
     );
   }
