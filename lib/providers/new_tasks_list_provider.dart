@@ -5,9 +5,9 @@ import '../models/task.dart';
 
 class NewTasksListProvider extends InheritedWidget {
   final NewTasks newTasks;
-  final void Function(Task task) addTask;
-  final void Function(Task task) endTask;
-  final void Function(Task task) deleteTask;
+  final void Function(Task) addTask;
+  final void Function(Task) endTask;
+  final void Function(Task) deleteTask;
 
   const NewTasksListProvider({
     super.key,

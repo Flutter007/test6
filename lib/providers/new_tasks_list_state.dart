@@ -23,7 +23,7 @@ class _NewTasksListStateState extends State<NewTasksListState> {
 
   void endTask(Task task) {
     setState(() {
-      task.done = true;
+      newTasks.endTask(task);
     });
   }
 

@@ -33,6 +33,10 @@ class _CreationTaskScreenState extends State<CreationTaskScreen> {
     });
   }
 
+  void goToTasksScreen() async {
+    await Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
+  }
+
   void getTask() async {
     try {
       final url =
@@ -45,6 +49,7 @@ class _CreationTaskScreenState extends State<CreationTaskScreen> {
         isLoading = false;
       });
       addTask(task!);
+      goToTasksScreen();
     } catch (e) {
       error = e.toString();
       isLoading = false;
@@ -61,6 +66,7 @@ class _CreationTaskScreenState extends State<CreationTaskScreen> {
     } else {
       content = Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Padding(
               padding: EdgeInsets.only(top: 20),
@@ -83,8 +89,10 @@ class _CreationTaskScreenState extends State<CreationTaskScreen> {
                         .toList(),
               ),
             ),
-            ElevatedButton(onPressed: getTask, child: Text('Get Task')),
-            if (task != null) ...[Text(task!.activity), Text(task!.type)],
+            ElevatedButton(
+              onPressed: getTask,
+              child: Text(isLoading ? 'Get Task' : 'Loading...'),
+            ),
           ],
         ),
       );

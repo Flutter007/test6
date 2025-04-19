@@ -2,7 +2,7 @@ import 'package:test6/models/task.dart';
 
 class NewTasks {
   List<Task> newTasks = [];
-  List<Task> doneTasks = [];
+
   void addTask(Task task) {
     if (!newTasks.any((t) => t.key == task.key)) {
       newTasks.add(task);
@@ -12,7 +12,7 @@ class NewTasks {
   }
 
   void endTask(Task task) {
-    task.done = true;
+    task.done = !task.done;
   }
 
   void deleteTask(Task task) {
